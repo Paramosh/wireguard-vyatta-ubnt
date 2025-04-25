@@ -69,7 +69,7 @@ jobs:
           find $(find arch -name include -type d -print) -type f | cpio -pdm "/headers"
           tar -cf headers.tar /headers/
       - name: Store headers
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: headers-${{ matrix.device }}-${{ matrix.version }}
           path: headers.tar
@@ -141,7 +141,7 @@ jobs:
           make -j$(nproc) ARCH=mips CROSS_COMPILE=${{ matrix.toolchain }} KERNELDIR=$GITHUB_WORKSPACE/headers module
           ${{ matrix.toolchain }}strip --strip-debug wireguard.ko
       - name: Upload built module
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: module-${{ matrix.device }}-${{ matrix.version }}
           path: module/src/wireguard.ko
@@ -176,7 +176,7 @@ jobs:
           CC="$ARCH-linux-musl-gcc" LDLIBS="-static" make -j$(nproc)
           $ARCH-linux-musl-strip --strip-unneeded wg
       - name: Upload built tools
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: tools-${{ matrix.arch }}
           path: tools/src/wg
@@ -234,7 +234,7 @@ jobs:
           dpkg-deb -b -Z gzip pkg
           mv pkg.deb ${{ matrix.device }}-v${{ matrix.version }}-v$MODULE_VERSION-v$TOOLS_VERSION.deb
       - name: Upload package
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: release_${{ matrix.device }}-v${{ matrix.version }}
           path: ${{ matrix.device }}-v${{ matrix.version }}-v${{ env.MODULE_VERSION }}-v${{ env.TOOLS_VERSION }}.deb
@@ -276,7 +276,7 @@ jobs:
       - name: Generate artifacts
         run: tar -cf buildroot.tar buildroot-2017.11.1
       - name: Store headers
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: buildroot
           path: buildroot.tar
@@ -323,7 +323,7 @@ jobs:
             cp output/build/linux-custom/net/ipv6/netfilter/ip6table_raw.ko ../modules/ip6table_raw-${prefix}${ver}.ko
           done)
       - name: Store modules
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: modules
           path: modules
@@ -362,7 +362,7 @@ jobs:
           cp buildroot-2017.11.1/output/target/etc/resolvconf.conf tools/
           cp buildroot-2017.11.1/output/build/wireguard-tools-$TOOLS_VERSION/src/wg-quick/linux.bash tools/wg-quick
       - name: Store tools
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: tools
           path: tools
@@ -393,7 +393,7 @@ jobs:
       - name: Package
         run: tar -C package -czf UnifiOS-$MODULE_VERSION-$TOOLS_VERSION.tar.gz ./
       - name: Store package
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: release_unifios
           path: UnifiOS-${{ env.MODULE_VERSION }}-${{ env.TOOLS_VERSION }}.tar.gz
