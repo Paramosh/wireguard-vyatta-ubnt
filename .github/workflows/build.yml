@@ -47,7 +47,7 @@ jobs:
             image: mipsel-kernel
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Build headers
         run: |
           mkdir /headers
@@ -80,7 +80,7 @@ jobs:
       image: buildpack-deps:focal
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Download module source
         run: |
           curl -L -o wireguard-linux-compat-$MODULE_VERSION.tar.gz https://github.com/amnezia-vpn/amneziawg-linux-kernel-module/archive/refs/tags/v$MODULE_VERSION.tar.gz
@@ -124,7 +124,7 @@ jobs:
             image: mtk-kernel
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Restore module source
         uses: actions/download-artifact@v3
         with:
@@ -161,7 +161,7 @@ jobs:
             target: mipsel-linux-musl
             image: lochnair/musl-buildenv:mipsel # Will be: mipsel-tools
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Build tools
         env:
           TARGET: ${{ matrix.target }}
@@ -206,7 +206,7 @@ jobs:
             version: 2
             arch: mipsel
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Download module
         uses: actions/download-artifact@v3
         with:
@@ -241,7 +241,7 @@ jobs:
   udm-prepare-buildroot:
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Download buildroot-2017.11.1
         run: |
           curl -o buildroot.tar.bz2 https://buildroot.org/downloads/buildroot-2017.11.1.tar.bz2
@@ -249,11 +249,11 @@ jobs:
       - name: Download WireGuard module source
         run: |
           curl -L -o wireguard-linux-compat-$MODULE_VERSION.tar.gz https://github.com/amnezia-vpn/amneziawg-linux-kernel-module/archive/refs/tags/v$MODULE_VERSION.tar.gz
-          tar -zf wireguard-linux-compat-$MODULE_VERSION.tar.gz
+          tar -xzf wireguard-linux-compat-$MODULE_VERSION.tar.gz
       - name: Download WireGuard tools source
         run: |
           curl -L -o wireguard-tools-$TOOLS_VERSION.tar.gz https://github.com/amnezia-vpn/amneziawg-tools/archive/refs/tags/v$TOOLS_VERSION.tar.gz
-          tar -zf wireguard-tools-$TOOLS_VERSION.tar.gz
+          tar -xzf wireguard-tools-$TOOLS_VERSION.tar.gz
       - name: Copy packages
         run: cp -pr unifios/packages/* buildroot-2017.11.1/package
       - name: Copy WireGuard source
@@ -286,7 +286,7 @@ jobs:
       matrix:
         base: [udm-1.9.0-10, udm-1.10.0-8, udm-1.10.0-12, udm-se-2.2.4, udr-2.2.12]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Restore buildroot
         uses: actions/download-artifact@v3
         with:
@@ -332,7 +332,7 @@ jobs:
     env:
       BASE: udm-1.9.0-10
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Restore buildroot
         uses: actions/download-artifact@v3
         with:
@@ -369,7 +369,7 @@ jobs:
     needs: [udm-build-tools, udm-build-modules]
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Prepare
         run: mkdir -p package package/wireguard package/wireguard/modules package/wireguard/tools package/wireguard/etc
       - name: Restore modules
@@ -404,7 +404,7 @@ jobs:
       - udm-package
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Create Release
         id: create_release
         uses: fossoreslp/release-artifacts@v1
